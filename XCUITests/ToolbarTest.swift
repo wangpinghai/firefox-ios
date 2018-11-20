@@ -113,6 +113,7 @@ class ToolbarTests: BaseTestCase {
         }
         navigator.openURL(website1["url"]!, waitForLoading: true)
         // Adding the waiter right after navigating to the webpage in order to make the test more stable
+        waitUntilPageLoad()
         waitForExistence(app.buttons["TabLocationView.pageOptionsButton"])
         let pageActionMenuButton = app.buttons["TabLocationView.pageOptionsButton"]
         let statusbarElement = app.statusBars.children(matching: .other).element.children(matching: .other).element(boundBy: 0)
