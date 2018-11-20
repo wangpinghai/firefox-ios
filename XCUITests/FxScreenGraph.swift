@@ -465,7 +465,23 @@ func createScreenGraph(for test: XCTestCase, with app: XCUIApplication) -> MMScr
 
     map.addScreenState(HistoryRecentlyClosed) { screenState in
         screenState.dismissOnUse = true
-        screenState.tap(app.buttons["Done"], to: HomePanelsScreen)
+
+        let origin = app.coordinate(withNormalizedOffset: CGVector.zero)
+        var goBackHistoryButtonCoordinate:XCUICoordinate? = nil
+        // Using coordinates to go back to general panel until there is a label or id
+        // for that element: https://bugzilla.mozilla.org/show_bug.cgi?id=1509115
+        // in the meantime tests related will work on iPhone 6, 6s, 8 and iPad Air, Air 2
+        if isTablet {
+            screenState.gesture(to: HomePanel_History) {
+            goBackHistoryButtonCoordinate = origin.withOffset(CGVector(dx: 114.0, dy: 252.0))
+                goBackHistoryButtonCoordinate?.tap()
+            }
+        } else {
+            screenState.gesture(to: HomePanel_History) {
+            goBackHistoryButtonCoordinate = origin.withOffset(CGVector(dx: 0.0, dy: 64.0))
+                goBackHistoryButtonCoordinate?.tap()
+            }
+        }
     }
 
     map.addScreenState(HistoryPanelContextMenu) { screenState in
